@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Setting Up MongoDB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS -->
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f1f5f9;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+
+    header {
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 30px;
+      color: #0f172a;
+    }
+
+    h3 {
+      margin-top: 20px;
+      color: #1e293b;
+    }
+
+    h4 {
+      margin-top: 15px;
+      color: #334155;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    ul {
+      margin-left: 25px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: #ffffff;
+    }
+
+    table, th, td {
+      border: 1px solid #cbd5e1;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e2e8f0;
+    }
+
+    pre {
+      background-color: #020617;
+      color: #e5e7eb;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 15px 0;
+    }
+
+    .note {
+      background: #ffffff;
+      border-left: 5px solid #38bdf8;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    button {
+      padding: 10px 18px;
+      background-color: #38bdf8;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background-color: #0ea5e9;
+    }
+
+    footer {
+      background-color: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Setting Up MongoDB</h1>
+  <p>Local Installation & MongoDB Atlas (Beginner Guide)</p>
+</header>
+
+<div class="container">
+
+  <h2>1. Choosing Between Local MongoDB and MongoDB Atlas</h2>
+
+  <table>
+    <tr>
+      <th>Option</th>
+      <th>When to Use</th>
+    </tr>
+    <tr>
+      <td><strong>Local MongoDB</strong></td>
+      <td>Learning, practice, offline work, exams</td>
+    </tr>
+    <tr>
+      <td><strong>MongoDB Atlas</strong></td>
+      <td>Real-world projects, cloud apps, deployment</td>
+    </tr>
+  </table>
+
+  <div class="note">
+    For beginners, it is recommended to start with <strong>local MongoDB</strong>.
+    MongoDB Atlas is important when building production-ready applications.
+  </div>
+
+  <h2>2. Installing MongoDB Locally</h2>
+
+  <h3>A. Windows Installation</h3>
+
+  <h4>Step 1: Download MongoDB</h4>
+  <ul>
+    <li>Visit MongoDB Community Server website</li>
+    <li>Download the Windows MSI installer</li>
+  </ul>
+
+  <h4>Step 2: Run the Installer</h4>
+  <ul>
+    <li>Launch the installer</li>
+    <li>Select <strong>Complete Installation</strong></li>
+    <li>Keep default settings</li>
+  </ul>
+
+  <h4>Step 3: Install MongoDB as a Service</h4>
+  <ul>
+    <li>Select <strong>Install MongoDB as a Service</strong></li>
+    <li>Choose <strong>Network Service user</strong></li>
+  </ul>
+
+  <h4>Step 4: Verify Installation</h4>
+  <pre>mongosh</pre>
+
+  <h3>B. macOS Installation</h3>
+
+  <h4>Install Homebrew</h4>
+  <pre>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre>
+
+  <h4>Install MongoDB</h4>
+  <pre>
+brew tap mongodb/brew
+brew install mongodb-community
+  </pre>
+
+  <h4>Start MongoDB</h4>
+  <pre>brew services start mongodb/brew/mongodb-community</pre>
+
+  <h3>C. Linux Installation (Ubuntu / Debian)</h3>
+
+  <h4>Import MongoDB Key</h4>
+  <pre>curl -fsSL https://pgp.mongodb.com/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server.gpg --dearmor</pre>
+
+  <h4>Add Repository</h4>
+  <pre>echo "deb [ signed-by=/usr/share/keyrings/mongodb-server.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org.list</pre>
+
+  <h4>Install MongoDB</h4>
+  <pre>
+sudo apt update
+sudo apt install -y mongodb-org
+  </pre>
+
+  <h4>Start Service</h4>
+  <pre>
+sudo systemctl start mongod
+sudo systemctl enable mongod
+  </pre>
+
+  <h2>3. Using MongoDB Atlas</h2>
+
+  <p>
+    MongoDB Atlas is a fully managed cloud MongoDB service.
+    No manual server installation is required.
+  </p>
+
+  <h3>Steps</h3>
+  <ul>
+    <li>Create an Atlas account</li>
+    <li>Create a free M0 cluster</li>
+    <li>Add IP address and database user</li>
+  </ul>
+
+  <h4>Connect Using MongoDB Shell</h4>
+  <pre>mongosh "mongodb+srv://&lt;username&gt;:&lt;password&gt;@cluster0.mongodb.net/"</pre>
+
+  <h2>4. Verify MongoDB Is Working</h2>
+  <pre>show dbs</pre>
+
+  <h2>5. Common Beginner Mistakes</h2>
+  <ul>
+    <li>Not starting MongoDB service</li>
+    <li>Blocking IP in Atlas</li>
+    <li>Using wrong connection string</li>
+    <li>Running mongod manually</li>
+  </ul>
+
+  <h2>6. Summary</h2>
+  <p>
+    You now know how to install MongoDB locally, use MongoDB Atlas,
+    verify the setup, and understand when to use each option.
+  </p>
+
+  <button onclick="showTip()">Click for Setup Tip</button>
+
+</div>
+
+<footer>
+  <p>© 2026 MongoDB Setup Guide | Beginner Friendly</p>
+</footer>
+
+<!-- JavaScript -->
+<script>
+  function showTip() {
+    alert("Always verify MongoDB using 'mongosh' before starting CRUD operations!");
+  }
+</script>
+
+</body>
+</html>

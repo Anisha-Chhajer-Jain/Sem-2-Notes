@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Introduction to MongoDB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS -->
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #0f172a;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #0f172a;
+      margin-top: 30px;
+    }
+
+    h3 {
+      margin-top: 20px;
+      color: #1e293b;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    ul {
+      margin-left: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e2e8f0;
+    }
+
+    pre {
+      background-color: #1e293b;
+      color: #f8fafc;
+      padding: 15px;
+      overflow-x: auto;
+      border-radius: 6px;
+    }
+
+    .highlight {
+      background: white;
+      padding: 15px;
+      border-left: 4px solid #38bdf8;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #0f172a;
+      color: white;
+      margin-top: 40px;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: none;
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Introduction to MongoDB</h1>
+    <p>A Beginner-Friendly Guide to NoSQL Databases</p>
+  </header>
+
+  <div class="container">
+
+    <h2>What is MongoDB?</h2>
+    <p>
+      MongoDB is an open-source, document-oriented NoSQL database.
+      Instead of rows and columns, it stores data as documents written in
+      a JSON-like format called BSON.
+    </p>
+
+    <div class="highlight">
+      <strong>MongoDB documents can contain:</strong>
+      <ul>
+        <li>Key–value pairs</li>
+        <li>Nested objects</li>
+        <li>Arrays</li>
+      </ul>
+    </div>
+
+    <h2>Key Characteristics of MongoDB</h2>
+
+    <h3>1. Document-Oriented Storage</h3>
+    <p>
+      Each document represents a complete real-world entity, reducing
+      the need for joins and multiple tables.
+    </p>
+
+    <h3>2. Flexible Schema</h3>
+    <p>
+      Documents in the same collection can have different fields, allowing
+      the database structure to evolve over time.
+    </p>
+
+    <h3>3. Horizontal Scalability</h3>
+    <p>
+      MongoDB supports sharding, which distributes data across multiple
+      servers to handle large traffic and data volumes.
+    </p>
+
+    <h3>4. Rich Query Capabilities</h3>
+    <p>
+      MongoDB supports filtering, indexing, aggregation, sorting,
+      and pagination.
+    </p>
+
+    <h2>MongoDB vs Relational Databases</h2>
+
+    <table>
+      <tr>
+        <th>Aspect</th>
+        <th>Relational Database</th>
+        <th>MongoDB</th>
+      </tr>
+      <tr>
+        <td>Data Model</td>
+        <td>Tables</td>
+        <td>Documents</td>
+      </tr>
+      <tr>
+        <td>Schema</td>
+        <td>Fixed</td>
+        <td>Flexible</td>
+      </tr>
+      <tr>
+        <td>Scaling</td>
+        <td>Vertical</td>
+        <td>Horizontal</td>
+      </tr>
+      <tr>
+        <td>Relationships</td>
+        <td>Joins</td>
+        <td>Embedded Documents</td>
+      </tr>
+    </table>
+
+    <h3>Example MongoDB Document</h3>
+    <pre>
+{
+  "order_id": "ORD10293",
+  "platform": "E-commerce",
+  "items": [
+    { "product": "Item A", "price": 1200 },
+    { "product": "Item B", "price": 800 }
+  ],
+  "status": "DELIVERED",
+  "delivery_time_minutes": 45
+}
+    </pre>
+
+    <h2>Why Learn MongoDB?</h2>
+    <ul>
+      <li>Faster development cycles</li>
+      <li>Easy schema changes</li>
+      <li>Scales well for large systems</li>
+      <li>Ideal for modern backend applications</li>
+    </ul>
+
+    <h2>Real-World Use Cases</h2>
+    <ul>
+      <li>User profile management</li>
+      <li>Product catalog systems</li>
+      <li>Analytics and reporting</li>
+      <li>Microservices architectures</li>
+    </ul>
+
+    <h2>When MongoDB Is Not the Best Choice</h2>
+    <p>
+      MongoDB is not ideal when strong relational constraints,
+      complex transactions, or fixed schemas are required.
+    </p>
+
+    <button onclick="showAlert()">Click to Learn More</button>
+
+  </div>
+
+  <footer>
+    <p>© 2026 MongoDB Introduction | Beginner Friendly</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    function showAlert() {
+      alert("MongoDB is best for flexible, scalable, modern applications!");
+    }
+  </script>
+
+</body>
+</html>
