@@ -1,0 +1,345 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MongoDB Core Query Operators</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+
+    header {
+      background-color: #020617;
+      color: white;
+      padding: 32px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 26px;
+    }
+
+    h2 {
+      margin-top: 38px;
+      color: #020617;
+    }
+
+    h3 {
+      margin-top: 26px;
+      color: #0f172a;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    ul {
+      margin-left: 26px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 26px 0;
+      background: white;
+    }
+
+    table, th, td {
+      border: 1px solid #cbd5e1;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e2e8f0;
+    }
+
+    pre {
+      background-color: #020617;
+      color: #e5e7eb;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 18px 0;
+    }
+
+    .note {
+      background: #ffffff;
+      border-left: 5px solid #38bdf8;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+    }
+
+    .warning {
+      background: #fff7ed;
+      border-left: 5px solid #fb923c;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 22px;
+      background-color: #38bdf8;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #0ea5e9;
+    }
+
+    footer {
+      background-color: #020617;
+      color: white;
+      text-align: center;
+      padding: 16px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>MongoDB Core Query Operators</h1>
+  <p>Filtering Beyond Exact Matches</p>
+</header>
+
+<div class="container">
+
+  <p>
+    Exact matches are not enough for real backend systems.
+    MongoDB provides query operators to support ranges, conditions,
+    inclusion logic, and flexible filtering.
+  </p>
+
+  <h2>Prerequisite: Insert Practice Data</h2>
+
+  <h3>Step 1: Select Database</h3>
+  <pre>use codinggita</pre>
+
+  <h3>Step 2: Insert Job Documents</h3>
+
+  <pre>
+db.jobs.insertMany([
+  {
+    company: "Google",
+    role: "Software Engineer",
+    experience: 3,
+    location: "Bangalore",
+    salaryLPA: 28
+  },
+  {
+    company: "Amazon",
+    role: "Backend Developer",
+    experience: 2,
+    location: "Hyderabad",
+    salaryLPA: 22
+  },
+  {
+    company: "Flipkart",
+    role: "Full Stack Developer",
+    experience: 1,
+    location: "Remote",
+    salaryLPA: 18
+  },
+  {
+    company: "Microsoft",
+    role: "Software Engineer",
+    experience: 4,
+    location: "Bangalore",
+    salaryLPA: 30
+  }
+]);
+  </pre>
+
+  <div class="note">
+    These documents are used in every query example below.
+  </div>
+
+  <h2>1. What Are Query Operators?</h2>
+
+  <pre>experience: { $gt: 2 }</pre>
+
+  <ul>
+    <li>Operators always start with <code>$</code></li>
+    <li>They are written inside objects</li>
+    <li>MongoDB evaluates them at query time</li>
+  </ul>
+
+  <h2>2. Comparison Operators</h2>
+
+  <table>
+    <tr>
+      <th>Operator</th>
+      <th>Meaning</th>
+      <th>Symbol</th>
+    </tr>
+    <tr><td>$eq</td><td>Equal to</td><td>==</td></tr>
+    <tr><td>$ne</td><td>Not equal</td><td>!=</td></tr>
+    <tr><td>$gt</td><td>Greater than</td><td>&gt;</td></tr>
+    <tr><td>$gte</td><td>Greater or equal</td><td>&gt;=</td></tr>
+    <tr><td>$lt</td><td>Less than</td><td>&lt;</td></tr>
+    <tr><td>$lte</td><td>Less or equal</td><td>&lt;=</td></tr>
+  </table>
+
+  <h3>Equality: Shorthand vs $eq</h3>
+
+  <pre>db.jobs.find({ experience: 2 })</pre>
+
+  <pre>db.jobs.find({ experience: { $eq: 2 } })</pre>
+
+  <div class="note">
+    Both queries behave exactly the same.
+  </div>
+
+  <h3>$gt – Greater Than</h3>
+
+  <pre>
+db.jobs.find({
+  experience: { $gt: 2 }
+})
+  </pre>
+
+  <h3>$lte – Less Than or Equal</h3>
+
+  <pre>
+db.jobs.find({
+  experience: { $lte: 2 }
+})
+  </pre>
+
+  <h3>Range Query</h3>
+
+  <pre>
+db.jobs.find({
+  experience: { $gte: 2, $lte: 5 }
+})
+  </pre>
+
+  <h3>$ne – Not Equal</h3>
+
+  <pre>
+db.jobs.find({
+  experience: { $ne: 1 }
+})
+  </pre>
+
+  <h2>3. Membership Operators</h2>
+
+  <h3>$in</h3>
+
+  <pre>
+db.jobs.find({
+  location: { $in: ["Bangalore", "Remote"] }
+})
+  </pre>
+
+  <h3>$nin</h3>
+
+  <pre>
+db.jobs.find({
+  company: { $nin: ["Google", "Amazon"] }
+})
+  </pre>
+
+  <h2>4. Logical Operators</h2>
+
+  <h3>$and</h3>
+
+  <pre>
+db.jobs.find({
+  $and: [
+    { role: "Software Engineer" },
+    { experience: { $gte: 3 } }
+  ]
+})
+  </pre>
+
+  <h3>Implicit AND</h3>
+
+  <pre>
+db.jobs.find({
+  role: "Software Engineer",
+  experience: { $gte: 3 }
+})
+  </pre>
+
+  <h3>$or</h3>
+
+  <pre>
+db.jobs.find({
+  $or: [
+    { role: "Software Engineer" },
+    { role: "Backend Developer" }
+  ]
+})
+  </pre>
+
+  <h2>5. $mod Operator</h2>
+
+  <pre>
+db.jobs.find({
+  experience: { $mod: [2, 0] }
+})
+  </pre>
+
+  <h2>6. Common Beginner Mistakes</h2>
+
+  <div class="warning">
+    MongoDB does not convert strings to numbers automatically.
+  </div>
+
+  <pre>{ experience: { $gt: "2" } }</pre>
+
+  <div class="warning">
+    $or always requires an array of conditions.
+  </div>
+
+  <h2>Key Takeaways</h2>
+
+  <ul>
+    <li>Query operators replace exact matching</li>
+    <li>Comparison operators handle ranges</li>
+    <li>$in and $nin support list filtering</li>
+    <li>Logical operators combine conditions</li>
+    <li>Think in conditions, not values</li>
+  </ul>
+
+  <button onclick="showOperatorTip()">Query Tip</button>
+
+</div>
+
+<footer>
+  <p>© 2026 MongoDB Query Operators | Backend Fundamentals</p>
+</footer>
+
+<script>
+  function showOperatorTip() {
+    alert("Always test your query logic with find() before using it in update or delete operations.");
+  }
+</script>
+
+</body>
+</html> -->

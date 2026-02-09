@@ -1,0 +1,340 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Creating Documents in MongoDB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+
+    header {
+      background-color: #020617;
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    h2 {
+      margin-top: 35px;
+      color: #020617;
+    }
+
+    h3 {
+      margin-top: 25px;
+      color: #0f172a;
+    }
+
+    h4 {
+      margin-top: 18px;
+      color: #334155;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    ul, ol {
+      margin-left: 25px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      background: white;
+    }
+
+    table, th, td {
+      border: 1px solid #cbd5e1;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e2e8f0;
+    }
+
+    pre {
+      background-color: #020617;
+      color: #e5e7eb;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 18px 0;
+    }
+
+    .note {
+      background: #ffffff;
+      border-left: 5px solid #38bdf8;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+    }
+
+    .warning {
+      background: #fff7ed;
+      border-left: 5px solid #fb923c;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .rule {
+      background: #ecfeff;
+      border: 1px solid #67e8f9;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 22px;
+      background-color: #38bdf8;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #0ea5e9;
+    }
+
+    footer {
+      background-color: #020617;
+      color: white;
+      text-align: center;
+      padding: 16px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Creating Documents in MongoDB</h1>
+  <p>Understanding the Create Operation in CRUD</p>
+</header>
+
+<div class="container">
+
+  <p>
+    Now that you understand what CRUD is and why it matters, it is time to begin
+    actual interaction with MongoDB. The first and most fundamental CRUD operation
+    is <strong>Create</strong>.
+  </p>
+
+  <div class="note">
+    If you cannot insert data correctly, you cannot read, update, or delete it.
+  </div>
+
+  <h2>1. What Does “Create” Mean in MongoDB?</h2>
+
+  <p>
+    In MongoDB, Create means inserting a new document into a collection.
+    MongoDB works with documents, not rows.
+  </p>
+
+  <ul>
+    <li>The entire document is stored</li>
+    <li>Each document gets a unique identity</li>
+    <li>The document becomes queryable immediately</li>
+  </ul>
+
+  <h2>Before You Insert: MongoDB Shell Basics</h2>
+
+  <h3>1. Entering the MongoDB Shell</h3>
+
+  <pre>mongosh</pre>
+
+  <p>
+    This connects you to a MongoDB server and places you in a default database.
+  </p>
+
+  <h3>2. Understanding the Current Database</h3>
+
+  <pre>db</pre>
+
+  <p>
+    By default, MongoDB connects you to a database named <strong>test</strong>.
+    Empty databases do not appear in listings.
+  </p>
+
+  <h3>3. Selecting a Database</h3>
+
+  <pre>use codinggita</pre>
+
+  <div class="note">
+    MongoDB creates the database only when the first document is inserted.
+    This is called lazy database creation.
+  </div>
+
+  <h3>4. Verifying Databases</h3>
+
+  <pre>show dbs</pre>
+
+  <h2>2. MongoDB Create Methods</h2>
+
+  <table>
+    <tr>
+      <th>Method</th>
+      <th>Purpose</th>
+    </tr>
+    <tr>
+      <td>insertOne()</td>
+      <td>Insert a single document</td>
+    </tr>
+    <tr>
+      <td>insertMany()</td>
+      <td>Insert multiple documents</td>
+    </tr>
+  </table>
+
+  <h2>3. Using insertOne()</h2>
+
+  <pre>db.collectionName.insertOne({ document })</pre>
+
+  <h3>Example: Insert Student Document</h3>
+
+  <pre>
+db.students.insertOne({
+  name: "Arjun",
+  rollNumber: "12345",
+  department: "CSE",
+  year: 3,
+  coursesEnrolled: ["Data Structures", "Algorithms", "DBMS"],
+  age: 22,
+  registrationDate: new Date()
+});
+  </pre>
+
+  <h3>Insert Result</h3>
+
+  <pre>
+{
+  acknowledged: true,
+  insertedId: ObjectId("...")
+}
+  </pre>
+
+  <h2>4. The _id Field</h2>
+
+  <div class="warning">
+    Every MongoDB document must have a unique <code>_id</code> field.
+  </div>
+
+  <ul>
+    <li>MongoDB generates it automatically</li>
+    <li>Type is ObjectId</li>
+    <li>Duplicate _id causes insertion failure</li>
+  </ul>
+
+  <h2>5. Using Dates Correctly</h2>
+
+  <div class="rule">
+    Never store dates as strings. Always use <code>new Date()</code>.
+  </div>
+
+  <pre>
+"registrationDate": new Date()
+  </pre>
+
+  <h2>6. Using insertMany()</h2>
+
+  <pre>
+db.students.insertMany([
+  {
+    name: "Mahir",
+    rollNumber: "12346",
+    department: "CSE",
+    year: 2,
+    coursesEnrolled: ["Mathematics", "DBMS", "OS"],
+    age: 21,
+    registrationDate: new Date()
+  },
+  {
+    name: "Yashvi",
+    rollNumber: "12347",
+    department: "CSE",
+    year: 2,
+    coursesEnrolled: ["Networks", "Algorithms"],
+    age: 20,
+    registrationDate: new Date()
+  }
+]);
+  </pre>
+
+  <div class="note">
+    Beginners should prefer insertOne() and use insertMany() carefully.
+  </div>
+
+  <h2>7. Common Beginner Mistakes</h2>
+
+  <ul>
+    <li>Inconsistent field names</li>
+    <li>Storing numbers as strings</li>
+    <li>Forgetting arrays for multi-value fields</li>
+  </ul>
+
+  <h2>8. When Create Operations Fail</h2>
+
+  <ul>
+    <li>Duplicate _id</li>
+    <li>Invalid structure</li>
+    <li>Schema validation rules</li>
+  </ul>
+
+  <div class="note">
+    MongoDB either inserts the entire document or nothing at all.
+  </div>
+
+  <h2>Key Takeaways</h2>
+
+  <ul>
+    <li>How to insert documents correctly</li>
+    <li>Difference between insertOne and insertMany</li>
+    <li>Importance of _id</li>
+    <li>Correct data types</li>
+    <li>Common mistakes to avoid</li>
+  </ul>
+
+  <button onclick="showTip()">Click for Safety Tip</button>
+
+</div>
+
+<footer>
+  <p>© 2026 MongoDB Create Operations | Beginner Friendly</p>
+</footer>
+
+<script>
+  function showTip() {
+    alert("Always double-check your data structure before inserting into a production database.");
+  }
+</script>
+
+</body>
+</html> -->

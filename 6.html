@@ -1,0 +1,288 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reading Documents in MongoDB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+
+    header {
+      background-color: #020617;
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    h2 {
+      margin-top: 35px;
+      color: #020617;
+    }
+
+    h3 {
+      margin-top: 25px;
+      color: #0f172a;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    ul {
+      margin-left: 25px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      background: white;
+    }
+
+    table, th, td {
+      border: 1px solid #cbd5e1;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e2e8f0;
+    }
+
+    pre {
+      background-color: #020617;
+      color: #e5e7eb;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 18px 0;
+    }
+
+    .note {
+      background: #ffffff;
+      border-left: 5px solid #38bdf8;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+    }
+
+    .warning {
+      background: #fff7ed;
+      border-left: 5px solid #fb923c;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 22px;
+      background-color: #38bdf8;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #0ea5e9;
+    }
+
+    footer {
+      background-color: #020617;
+      color: white;
+      text-align: center;
+      padding: 16px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Reading Documents in MongoDB</h1>
+  <p>Basic Read Operations using find() and findOne()</p>
+</header>
+
+<div class="container">
+
+  <p>
+    Before you can update or delete data, you must be able to read it correctly.
+    Reads are the foundation of all backend logic.
+  </p>
+
+  <div class="note">
+    Inserts are about writing data. Reads are about understanding what you wrote.
+  </div>
+
+  <h2>1. What Does “Read” Mean in MongoDB?</h2>
+
+  <p>
+    In MongoDB, Read means fetching documents from a collection based on a condition.
+    MongoDB finds documents — it does not select rows.
+  </p>
+
+  <ul>
+    <li>Verify inserts</li>
+    <li>Fetch user data</li>
+    <li>Power APIs</li>
+    <li>Prepare for updates and deletes</li>
+  </ul>
+
+  <h2>Prerequisite: Insert One Document for Practice</h2>
+
+  <h3>Step 1: Select the Database</h3>
+
+  <pre>use codinggita</pre>
+
+  <h3>Step 2: Insert One Student Document</h3>
+
+  <pre>
+db.students.insertOne({
+  name: "Arjun",
+  rollNumber: "CG101",
+  department: "CSE",
+  year: 3,
+  coursesEnrolled: ["DBMS", "Data Structures", "Algorithms"],
+  age: 22,
+  registrationDate: new Date()
+});
+  </pre>
+
+  <div class="note">
+    This single document is enough to practice find(), findOne(), and basic filters.
+  </div>
+
+  <h2>2. The find() Method</h2>
+
+  <pre>db.collectionName.find()</pre>
+
+  <p>
+    This command returns all documents in a collection.
+    Results are returned in cursor format.
+  </p>
+
+  <h3>Example: Read All Students</h3>
+
+  <pre>db.students.find()</pre>
+
+  <h2>3. Reading with a Filter</h2>
+
+  <pre>db.collectionName.find({ field: value })</pre>
+
+  <h3>Example: Find Students from CSE</h3>
+
+  <pre>db.students.find({ department: "CSE" })</pre>
+
+  <div class="warning">
+    MongoDB matching is case-sensitive. "cse" is not equal to "CSE".
+  </div>
+
+  <h2>4. Using findOne()</h2>
+
+  <pre>db.collectionName.findOne()</pre>
+
+  <h3>Example</h3>
+
+  <pre>db.students.findOne({ rollNumber: "CG101" })</pre>
+
+  <table>
+    <tr>
+      <th>find()</th>
+      <th>findOne()</th>
+    </tr>
+    <tr>
+      <td>Returns multiple documents</td>
+      <td>Returns one document</td>
+    </tr>
+    <tr>
+      <td>Cursor</td>
+      <td>Single object</td>
+    </tr>
+    <tr>
+      <td>Lists & collections</td>
+      <td>Detail views</td>
+    </tr>
+  </table>
+
+  <h2>5. Understanding Query Matching</h2>
+
+  <pre>db.students.find({ year: 3 })</pre>
+
+  <div class="warning">
+    MongoDB is type-sensitive. Numbers and strings are not the same.
+  </div>
+
+  <h2>6. Reading Array Fields</h2>
+
+  <pre>db.students.find({ coursesEnrolled: "DBMS" })</pre>
+
+  <p>
+    MongoDB automatically checks array values. No special syntax is required.
+  </p>
+
+  <h2>7. Purpose of Reads at This Stage</h2>
+
+  <ul>
+    <li>Confirm inserts</li>
+    <li>Inspect document structure</li>
+    <li>Understand stored data</li>
+  </ul>
+
+  <h2>8. Common Beginner Mistakes</h2>
+
+  <ul>
+    <li>Expecting partial matches</li>
+    <li>Ignoring data types</li>
+    <li>Using the wrong database</li>
+  </ul>
+
+  <pre>db</pre>
+
+  <h2>Key Takeaways</h2>
+
+  <ul>
+    <li>Use find() to read multiple documents</li>
+    <li>Use findOne() when one result is expected</li>
+    <li>MongoDB uses exact and type-safe matching</li>
+    <li>Reads are the base of all backend logic</li>
+  </ul>
+
+  <button onclick="showReadTip()">Click for Read Tip</button>
+
+</div>
+
+<footer>
+  <p>© 2026 MongoDB Read Operations | Beginner Friendly</p>
+</footer>
+
+<script>
+  function showReadTip() {
+    alert("Always verify your inserts using find() before moving to update or delete operations.");
+  }
+</script>
+
+</body>
+</html> -->
