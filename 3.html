@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MongoDB Basics: Core Concepts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+
+    header {
+      background-color: #020617;
+      color: #ffffff;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    h2 {
+      margin-top: 35px;
+      color: #020617;
+    }
+
+    h3 {
+      margin-top: 25px;
+      color: #0f172a;
+    }
+
+    h4 {
+      margin-top: 15px;
+      color: #334155;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    ul {
+      margin-left: 25px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    pre {
+      background-color: #020617;
+      color: #e5e7eb;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 18px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      background: white;
+    }
+
+    table, th, td {
+      border: 1px solid #cbd5e1;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e2e8f0;
+    }
+
+    .note {
+      background: #ffffff;
+      border-left: 5px solid #22d3ee;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+    }
+
+    .rule {
+      background: #ecfeff;
+      border: 1px solid #67e8f9;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #22d3ee;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #06b6d4;
+    }
+
+    footer {
+      background-color: #020617;
+      color: white;
+      text-align: center;
+      padding: 16px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>MongoDB Basics: Core Concepts</h1>
+  <p>Understanding How MongoDB Stores and Organizes Data</p>
+</header>
+
+<div class="container">
+
+  <p>
+    Before working with MongoDB queries and commands, it is important to understand
+    how MongoDB stores, organizes, and relates data. These concepts form the
+    foundation of CRUD operations, indexing, aggregation, and schema design.
+  </p>
+
+  <h2>1. Data Hierarchy in MongoDB</h2>
+
+  <pre>Database → Collection → Document</pre>
+
+  <p>
+    MongoDB stores documents inside collections, and collections inside databases.
+    This structure replaces the table-based model used in relational databases.
+  </p>
+
+  <h3>Database</h3>
+  <p>
+    A database is the top-level container in MongoDB. One MongoDB server can host
+    multiple databases, usually one per application.
+  </p>
+
+  <ul>
+    <li>Contains multiple collections</li>
+    <li>No fixed limit on collections</li>
+  </ul>
+
+  <strong>Example:</strong> CodingGitaBTechDB
+
+  <h3>Collection</h3>
+  <p>
+    A collection is a group of related documents. It is similar to a table in SQL,
+    but without a fixed schema.
+  </p>
+
+  <ul>
+    <li>Documents can have different fields</li>
+    <li>No column enforcement</li>
+  </ul>
+
+  <strong>Example:</strong> students
+
+  <h3>Document</h3>
+  <p>
+    A document is a single record stored in BSON format as key–value pairs.
+  </p>
+
+  <pre>
+{
+  "name": "Arjun",
+  "rollNumber": "12345",
+  "department": "CSE",
+  "year": 3,
+  "coursesEnrolled": ["Data Structures", "DBMS", "AI"],
+  "age": 21
+}
+  </pre>
+
+  <div class="note">
+    Each student is stored as one complete document, reducing the need for joins.
+  </div>
+
+  <h2>2. BSON (Binary JSON)</h2>
+
+  <p>
+    MongoDB stores data internally using BSON, a binary representation of JSON.
+  </p>
+
+  <ul>
+    <li>Faster read and write performance</li>
+    <li>Supports advanced data types</li>
+    <li>Optimized for indexing</li>
+  </ul>
+
+  <h4>BSON Date Example</h4>
+
+  <pre>
+{
+  "name": "Krishna",
+  "enrollmentDate": { "$date": "2021-08-15T00:00:00Z" }
+}
+  </pre>
+
+  <h2>3. Schema-less Nature of MongoDB</h2>
+
+  <p>
+    MongoDB does not enforce a fixed schema. Each document can evolve independently.
+  </p>
+
+  <h4>Initial Document</h4>
+  <pre>
+{
+  "name": "Priyasha",
+  "rollNumber": "67890",
+  "department": "CSE",
+  "year": 2
+}
+  </pre>
+
+  <h4>Updated Document</h4>
+  <pre>
+{
+  "name": "Priyasha",
+  "rollNumber": "67890",
+  "department": "CSE",
+  "year": 2,
+  "skills": ["Java", "MongoDB", "React"]
+}
+  </pre>
+
+  <div class="note">
+    Older documents remain valid even when new fields are added.
+  </div>
+
+  <h2>4. Embedded Documents vs Referencing</h2>
+
+  <h3>Embedding</h3>
+
+  <pre>
+{
+  "name": "Yashvi",
+  "rollNumber": "112233",
+  "department": "CSE",
+  "year": 1,
+  "courses": [
+    {
+      "courseCode": "CS101",
+      "courseName": "Data Structures",
+      "credits": 4
+    }
+  ]
+}
+  </pre>
+
+  <ul>
+    <li>Faster reads</li>
+    <li>One-to-few relationships</li>
+    <li>Data accessed together</li>
+  </ul>
+
+  <h3>Referencing</h3>
+
+  <pre>
+{
+  "name": "Yashvi",
+  "courses": [
+    { "$ref": "courses", "$id": "CS101" },
+    { "$ref": "courses", "$id": "CS102" }
+  ]
+}
+  </pre>
+
+  <ul>
+    <li>Data shared across documents</li>
+    <li>Large or frequently changing data</li>
+  </ul>
+
+  <h2>Embedding vs Referencing</h2>
+
+  <table>
+    <tr>
+      <th>Aspect</th>
+      <th>Embedding</th>
+      <th>Referencing</th>
+    </tr>
+    <tr>
+      <td>Read Performance</td>
+      <td>Fast</td>
+      <td>Slower</td>
+    </tr>
+    <tr>
+      <td>Data Duplication</td>
+      <td>Possible</td>
+      <td>Minimal</td>
+    </tr>
+    <tr>
+      <td>Best For</td>
+      <td>One-to-few</td>
+      <td>One-to-many</td>
+    </tr>
+  </table>
+
+  <div class="rule">
+    Rule of Thumb:  
+    If data belongs to one document → Embed  
+    If data is shared → Reference
+  </div>
+
+  <button onclick="showTip()">Click for Design Tip</button>
+
+</div>
+
+<footer>
+  <p>© 2026 MongoDB Core Concepts | Beginner Friendly</p>
+</footer>
+
+<!-- JavaScript -->
+<script>
+  function showTip() {
+    alert("Good MongoDB design depends on how your data is queried, not just how it is stored.");
+  }
+</script>
+
+</body>
+</html>
