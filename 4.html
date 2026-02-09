@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Introduction to CRUD in MongoDB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+
+    header {
+      background-color: #020617;
+      color: #ffffff;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    h2 {
+      margin-top: 35px;
+      color: #020617;
+    }
+
+    h3 {
+      margin-top: 25px;
+      color: #0f172a;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    ul {
+      margin-left: 25px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      background: #ffffff;
+    }
+
+    table, th, td {
+      border: 1px solid #cbd5e1;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e2e8f0;
+    }
+
+    pre {
+      background-color: #020617;
+      color: #e5e7eb;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 18px 0;
+    }
+
+    .note {
+      background: #ffffff;
+      border-left: 5px solid #38bdf8;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+    }
+
+    .warning {
+      background: #fff7ed;
+      border-left: 5px solid #fb923c;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .rule {
+      background: #ecfeff;
+      border: 1px solid #67e8f9;
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 22px;
+      background-color: #38bdf8;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #0ea5e9;
+    }
+
+    footer {
+      background-color: #020617;
+      color: white;
+      text-align: center;
+      padding: 16px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Introduction to CRUD in MongoDB</h1>
+  <p>Understanding the Foundation of Backend Data Operations</p>
+</header>
+
+<div class="container">
+
+  <p>
+    Before writing MongoDB queries or memorizing commands, it is important to
+    understand what CRUD represents and why every backend system revolves around it.
+  </p>
+
+  <p>
+    CRUD is a fundamental data-access model used by almost every software system.
+    MongoDB simply provides its own way of performing these operations.
+  </p>
+
+  <h2>1. What Does CRUD Mean?</h2>
+
+  <table>
+    <tr>
+      <th>Operation</th>
+      <th>Meaning</th>
+      <th>Purpose</th>
+    </tr>
+    <tr>
+      <td>Create</td>
+      <td>Insert new data</td>
+      <td>Store information</td>
+    </tr>
+    <tr>
+      <td>Read</td>
+      <td>Fetch existing data</td>
+      <td>View or search information</td>
+    </tr>
+    <tr>
+      <td>Update</td>
+      <td>Modify existing data</td>
+      <td>Change information</td>
+    </tr>
+    <tr>
+      <td>Delete</td>
+      <td>Remove data</td>
+      <td>Erase information</td>
+    </tr>
+  </table>
+
+  <div class="note">
+    Any application that stores data must support all four CRUD operations to function correctly.
+  </div>
+
+  <h2>2. CRUD in Real Applications</h2>
+
+  <ul>
+    <li>User signs up → <strong>Create</strong></li>
+    <li>User profile is displayed → <strong>Read</strong></li>
+    <li>User updates details → <strong>Update</strong></li>
+    <li>User deletes account → <strong>Delete</strong></li>
+  </ul>
+
+  <p>
+    Every backend request eventually translates into one or more CRUD operations
+    at the database level.
+  </p>
+
+  <h2>3. How CRUD Maps to MongoDB</h2>
+
+  <table>
+    <tr>
+      <th>CRUD Operation</th>
+      <th>MongoDB Methods</th>
+    </tr>
+    <tr>
+      <td>Create</td>
+      <td>insertOne(), insertMany()</td>
+    </tr>
+    <tr>
+      <td>Read</td>
+      <td>findOne(), find()</td>
+    </tr>
+    <tr>
+      <td>Update</td>
+      <td>updateOne(), updateMany(), replaceOne()</td>
+    </tr>
+    <tr>
+      <td>Delete</td>
+      <td>deleteOne(), deleteMany()</td>
+    </tr>
+  </table>
+
+  <p>
+    Each MongoDB CRUD method has a specific purpose, risk, and best practice.
+    This is why CRUD must be learned gradually.
+  </p>
+
+  <h2>4. MongoDB CRUD vs SQL CRUD</h2>
+
+  <ul>
+    <li>MongoDB works with documents, not rows</li>
+    <li>Operations target entire documents or fields</li>
+    <li>Related data is often stored together</li>
+    <li>Schema is flexible</li>
+  </ul>
+
+  <div class="note">
+    <strong>Mindset shift:</strong><br>
+    SQL → Which table and row?<br>
+    MongoDB → Which document and fields?
+  </div>
+
+  <h2>5. CRUD Is Not Just Commands</h2>
+
+  <div class="warning">
+    Incorrect CRUD usage can silently destroy data.
+  </div>
+
+  <ul>
+    <li>Deciding what data to store</li>
+    <li>Knowing when to read one vs many documents</li>
+    <li>Updating only required fields</li>
+    <li>Deleting data safely</li>
+  </ul>
+
+  <h2>6. Order Matters When Learning CRUD</h2>
+
+  <ol>
+    <li>Create data</li>
+    <li>Read data</li>
+    <li>Filter and control reads</li>
+    <li>Update safely</li>
+    <li>Update advanced structures</li>
+    <li>Delete carefully</li>
+    <li>Learn best practices</li>
+  </ol>
+
+  <div class="note">
+    Skipping steps can lead to broken schemas, performance issues, and bugs.
+  </div>
+
+  <h2>7. MongoDB CRUD Context</h2>
+
+  <pre>Database → Collection → Document</pre>
+
+  <p>
+    CRUD operations are always applied to a collection and affect one or more documents.
+  </p>
+
+  <pre>
+Database: codinggita
+Collection: students
+Operation: insert / find / update / delete
+  </pre>
+
+  <h2>What You Should Be Clear About</h2>
+
+  <ul>
+    <li>What CRUD stands for</li>
+    <li>Why CRUD is essential</li>
+    <li>How CRUD maps to MongoDB</li>
+    <li>How MongoDB differs from SQL</li>
+    <li>Why learning CRUD gradually matters</li>
+  </ul>
+
+  <div class="rule">
+    Clear thinking about CRUD makes MongoDB commands easier and safer to write.
+  </div>
+
+  <button onclick="showTip()">Click for Learning Tip</button>
+
+</div>
+
+<footer>
+  <p>© 2026 MongoDB CRUD Introduction | Beginner Friendly</p>
+</footer>
+
+<!-- JavaScript -->
+<script>
+  function showTip() {
+    alert("Always think about the impact of a CRUD operation before running it on real data.");
+  }
+</script>
+
+</body>
+</html>
