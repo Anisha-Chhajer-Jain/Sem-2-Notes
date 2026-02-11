@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Campus Navigation System</title>
+   <style>
+    body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    text-align: center;
+}
+
+h1 {
+    margin: 20px 0;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+#campus {
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    gap: 5px;
+    justify-content: center;
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    background: #e0e0e0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.start {
+    background: #4caf50;
+    color: white;
+}
+
+.end {
+    background: #f44336;
+    color: white;
+}
+
+.path {
+    background: #2196f3;
+    color: white;
+}
+
+   </style>
+</head>
+<body>
+
+<h1>🏫 Campus Navigation System</h1>
+
+<div class="controls">
+    <label>Start:
+        <select id="start">
+            <option value="0,0">Main Gate</option>
+            <option value="2,1">Library</option>
+            <option value="4,0">Hostel</option>
+        </select>
+    </label>
+
+    <label>Destination:
+        <select id="end">
+            <option value="4,4">Computer Dept</option>
+            <option value="1,4">Cafeteria</option>
+            <option value="3,3">Admin Office</option>
+        </select>
+    </label>
+
+    <button onclick="findPath()">Find Path</button>
+</div>
+
+<div id="campus"></div>
+
+<script>
+    const campus = document.getElementById("campus");
+const size = 5;
+
+// Create grid
+function drawGrid() {
+    campus.innerHTML = "";
+    for (let i = 0; i < size * size; i++) {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        campus.appendChild(cell);
+    }
+}
+
+drawGrid();
+
+// Convert (x,y) to index
+function index(x, y) {
+    return x * size + y;
+}
+
+// BFS shortest path
+function bfs(start, end) {
+    let queue = [[start]];
+    let visited = new Set([start.toString()]);
+
+    while (queue.length) {
+        let path = queue.shift();
+        let [x, y] = path[path.length - 1];
+
+        if (x === end[0] && y === end[1]) return path;
+
+        let directions = [[1,0],[-1,0],[0,1],[0,-1]];
+
+        for (let [dx, dy] of directions) {
+            let nx = x + dx;
+            let ny = y + dy;
+
+            if (nx >= 0 && ny >= 0 && nx < size && ny < size) {
+                let key = `${nx},${ny}`;
+                if (!visited.has(key)) {
+                    visited.add(key);
+                    queue.push([...path, [nx, ny]]);
+                }
+            }
+        }
+    }
+    return [];
+}
+
+// Find path
+function findPath() {
+    drawGrid();
+
+    const start = document.getElementById("start").value.split(",").map(Number);
+    const end = document.getElementById("end").value.split(",").map(Number);
+
+    const path = bfs(start, end);
+    const cells = document.querySelectorAll(".cell");
+
+    cells[index(start[0], start[1])].classList.add("start");
+    cells[index(end[0], end[1])].classList.add("end");
+
+    path.forEach(([x, y]) => {
+        cells[index(x, y)].classList.add("path");
+    });
+}
+
+</script>
+</body>
+</html>

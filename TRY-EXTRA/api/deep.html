@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Navigation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a6bc4 0%, #0d4d8c 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            font-weight: 300;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a:hover {
+            opacity: 0.85;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            padding: 30px 0;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #1a6bc4;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .map-container {
+            grid-column: span 2;
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 1024px) {
+            .map-container {
+                grid-column: span 1;
+            }
+        }
+
+        #campusMap {
+            width: 100%;
+            height: 100%;
+            background-color: #e9f5ff;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .location-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #1a6bc4;
+            border: 3px solid white;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+
+        .location-marker:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+        }
+
+        .location-marker.selected {
+            background-color: #ff6b6b;
+            z-index: 20;
+        }
+
+        .location-marker.important {
+            background-color: #ff9f43;
+        }
+
+        .location-label {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            white-space: nowrap;
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 50px;
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: #1a6bc4;
+            outline: none;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8a9bb2;
+            font-size: 1.2rem;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 10px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: #1a6bc4;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0d4d8c;
+        }
+
+        .btn-secondary {
+            background-color: #f0f5ff;
+            color: #1a6bc4;
+            border: 2px solid #1a6bc4;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e1ebff;
+        }
+
+        .location-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .location-item {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .location-item:hover {
+            background-color: #f9fbff;
+        }
+
+        .location-item.selected {
+            background-color: #e9f2ff;
+            border-left: 4px solid #1a6bc4;
+        }
+
+        .location-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .location-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .location-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .directions-panel {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 1024px) {
+            .directions-panel {
+                grid-column: span 1;
+            }
+        }
+
+        .directions-instructions {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9fbff;
+            border-radius: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .instruction-step {
+            padding: 15px 0;
+            border-bottom: 1px dashed #d1ddec;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .instruction-step:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background-color: #1a6bc4;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            flex-grow: 1;
+        }
+
+        .step-distance {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .location-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background-color: #f0f5ff;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn.active {
+            background-color: #1a6bc4;
+            color: white;
+        }
+
+        .category-btn:hover:not(.active) {
+            background-color: #e1ebff;
+        }
+
+        footer {
+            background-color: #1c1c1c;
+            color: #ddd;
+            padding: 30px 0;
+            margin-top: 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background-color: #1a6bc4;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.5s, opacity 0.5s;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <div>
+                        <h1>Campus Navigation System</h1>
+                        <span>Find your way around campus easily</span>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#"><i class="fas fa-map"></i> Map</a></li>
+                        <li><a href="#"><i class="fas fa-directions"></i> Directions</a></li>
+                        <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="dashboard">
+            <div class="panel search-panel">
+                <h2><i class="fas fa-search-location"></i> Find a Location</h2>
+                <div class="controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search for buildings, departments, facilities...">
+                    </div>
+                    <button class="btn btn-primary" id="searchBtn">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+                
+                <div class="location-categories">
+                    <button class="category-btn active" data-category="all">All Locations</button>
+                    <button class="category-btn" data-category="academic">Academic</button>
+                    <button class="category-btn" data-category="admin">Administrative</button>
+                    <button class="category-btn" data-category="facility">Facilities</button>
+                    <button class="category-btn" data-category="residence">Residence</button>
+                </div>
+                
+                <div class="location-list" id="locationList">
+                    <!-- Location items will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="panel route-panel">
+                <h2><i class="fas fa-route"></i> Plan Your Route</h2>
+                <div class="controls">
+                    <div class="search-box">
+                        <i class="fas fa-map-pin"></i>
+                        <input type="text" id="fromInput" placeholder="From: Your current location">
+                    </div>
+                    <div class="search-box">
+                        <i class="fas fa-flag"></i>
+                        <input type="text" id="toInput" placeholder="To: Select destination">
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="getDirectionsBtn" style="width: 100%; margin-top: 10px;">
+                    <i class="fas fa-directions"></i> Get Directions
+                </button>
+                
+                <div class="directions-instructions" id="directionsInstructions">
+                    <p style="text-align: center; color: #666; padding: 40px 20px;">
+                        Enter a starting point and destination to get directions
+                    </p>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <div id="campusMap">
+                    <!-- Map markers will be added by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="panel directions-panel">
+                <h2><i class="fas fa-compass"></i> Campus Information</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: #1a6bc4;">Key Features</h3>
+                        <ul style="list-style-type: none;">
+                            <li style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <i class="fas fa-check-circle" style="color: #1a6bc4; margin-right: 10px;"></i>
+                                Real-time directions
+                            </li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <i class="fas fa-check-circle" style="color: #1a6bc4; margin-right: 10px;"></i>
+                                Shortest path calculation
+                            </li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <i class="fas fa-check-circle" style="color: #1a6bc4; margin-right: 10px;"></i>
+                                Accessible routes
+                            </li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <i class="fas fa-check-circle" style="color: #1a6bc4; margin-right: 10px;"></i>
+                                Estimated walking time
+                            </li>
+                            <li style="padding: 10px 0;">
+                                <i class="fas fa-check-circle" style="color: #1a6bc4; margin-right: 10px;"></i>
+                                Facility details
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: #1a6bc4;">Quick Tips</h3>
+                        <ul style="list-style-type: none;">
+                            <li style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <i class="fas fa-lightbulb" style="color: #ff9f43; margin-right: 10px;"></i>
+                                Click on any building for details
+                            </li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <i class="fas fa-lightbulb" style="color: #ff9f43; margin-right: 10px;"></i>
+                                Use category filters to find specific locations
+                            </li>
+                            <li style="padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <i class="fas fa-lightbulb" style="color: #ff9f43; margin-right: 10px;"></i>
+                                Save frequently visited locations
+                            </li>
+                            <li style="padding: 10px 0;">
+                                <i class="fas fa-lightbulb" style="color: #ff9f43; margin-right: 10px;"></i>
+                                Enable notifications for campus alerts
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Campus Navigation</h3>
+                    <p>Making campus navigation simple and accessible for students, staff, and visitors.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Campus Map</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Building Directory</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Accessibility Info</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Campus Events</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@campusnav.edu</li>
+                        <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Administration Building, Room 101</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Campus Navigation System. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-info-circle"></i>
+        <span id="notificationText">Welcome to Campus Navigation System!</span>
+    </div>
+
+    <script>
+        // Campus location data
+        const campusLocations = [
+            { id: 1, name: "Main Library", type: "academic", x: 25, y: 35, description: "Central library with study spaces and computer labs", icon: "fas fa-book", color: "#1a6bc4" },
+            { id: 2, name: "Science Building", type: "academic", x: 60, y: 30, description: "Home to Biology, Chemistry, and Physics departments", icon: "fas fa-flask", color: "#1a6bc4" },
+            { id: 3, name: "Student Center", type: "facility", x: 50, y: 60, description: "Food court, student lounge, and event spaces", icon: "fas fa-users", color: "#ff9f43" },
+            { id: 4, name: "Administration Building", type: "admin", x: 40, y: 20, description: "Registrar, Admissions, and Finance offices", icon: "fas fa-landmark", color: "#10ac84" },
+            { id: 5, name: "Engineering Hall", type: "academic", x: 75, y: 40, description: "Engineering and Computer Science departments", icon: "fas fa-cogs", color: "#1a6bc4" },
+            { id: 6, name: "Campus Cafeteria", type: "facility", x: 30, y: 70, description: "All-day dining with multiple food stations", icon: "fas fa-utensils", color: "#ff9f43" },
+            { id: 7, name: "Sports Complex", type: "facility", x: 80, y: 75, description: "Gymnasium, swimming pool, and fitness center", icon: "fas fa-running", color: "#ff9f43" },
+            { id: 8, name: "Arts Building", type: "academic", x: 20, y: 50, description: "Fine arts, music, and theater departments", icon: "fas fa-palette", color: "#1a6bc4" },
+            { id: 9, name: "North Dormitory", type: "residence", x: 10, y: 65, description: "Freshmen residence hall", icon: "fas fa-bed", color: "#5f27cd" },
+            { id: 10, name: "Health Center", type: "facility", x: 65, y: 60, description: "Campus medical services and pharmacy", icon: "fas fa-clinic-medical", color: "#ff9f43" },
+            { id: 11, name: "Parking Garage", type: "facility", x: 70, y: 15, description: "Multi-level parking for students and staff", icon: "fas fa-parking", color: "#ff9f43" },
+            { id: 12, name: "Business School", type: "academic", x: 45, y: 45, description: "School of Business and Economics", icon: "fas fa-chart-line", color: "#1a6bc4" }
+        ];
+
+        // Selected locations
+        let selectedLocation = null;
+        let fromLocation = null;
+        let toLocation = null;
+
+        // DOM elements
+        const campusMap = document.getElementById('campusMap');
+        const locationList = document.getElementById('locationList');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const fromInput = document.getElementById('fromInput');
+        const toInput = document.getElementById('toInput');
+        const getDirectionsBtn = document.getElementById('getDirectionsBtn');
+        const directionsInstructions = document.getElementById('directionsInstructions');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+
+        // Initialize the application
+        function init() {
+            renderLocationList();
+            renderMapMarkers();
+            setupEventListeners();
+            showNotification("Welcome to Campus Navigation System! Click on any location to get started.");
+        }
+
+        // Render the list of locations
+        function renderLocationList(filter = 'all') {
+            locationList.innerHTML = '';
+            
+            const filteredLocations = filter === 'all' 
+                ? campusLocations 
+                : campusLocations.filter(loc => loc.type === filter);
+            
+            filteredLocations.forEach(location => {
+                const locationItem = document.createElement('div');
+                locationItem.className = `location-item ${selectedLocation === location.id ? 'selected' : ''}`;
+                locationItem.dataset.id = location.id;
+                
+                locationItem.innerHTML = `
+                    <div class="location-icon" style="background-color: ${location.color};">
+                        <i class="${location.icon}"></i>
+                    </div>
+                    <div class="location-info">
+                        <h3>${location.name}</h3>
+                        <p>${location.description}</p>
+                    </div>
+                `;
+                
+                locationItem.addEventListener('click', () => {
+                    selectLocation(location.id);
+                    fromInput.value = location.name;
+                });
+                
+                locationList.appendChild(locationItem);
+            });
+        }
+
+        // Render markers on the map
+        function renderMapMarkers() {
+            // Clear existing markers
+            document.querySelectorAll('.location-marker, .location-label').forEach(el => el.remove());
+            
+            campusLocations.forEach(location => {
+                // Create marker
+                const marker = document.createElement('div');
+                marker.className = `location-marker ${selectedLocation === location.id ? 'selected' : ''} ${location.type === 'facility' ? 'important' : ''}`;
+                marker.style.left = `${location.x}%`;
+                marker.style.top = `${location.y}%`;
+                marker.dataset.id = location.id;
+                marker.style.backgroundColor = location.color;
+                
+                // Create label
+                const label = document.createElement('div');
+                label.className = 'location-label';
+                label.textContent = location.name;
+                label.style.left = `${location.x}%`;
+                label.style.top = `${location.y - 8}%`;
+                label.id = `label-${location.id}`;
+                
+                // Add hover effects
+                marker.addEventListener('mouseenter', () => {
+                    document.getElementById(`label-${location.id}`).style.opacity = '1';
+                });
+                
+                marker.addEventListener('mouseleave', () => {
+                    document.getElementById(`label-${location.id}`).style.opacity = '0';
+                });
+                
+                marker.addEventListener('click', () => {
+                    selectLocation(location.id);
+                });
+                
+                campusMap.appendChild(marker);
+                campusMap.appendChild(label);
+            });
+        }
+
+        // Select a location
+        function selectLocation(id) {
+            selectedLocation = id;
+            const location = campusLocations.find(loc => loc.id === id);
+            
+            // Update UI
+            renderLocationList(document.querySelector('.category-btn.active').dataset.category);
+            renderMapMarkers();
+            
+            // Update search inputs
+            toInput.value = location.name;
+            toLocation = location;
+            
+            // Show notification
+            showNotification(`Selected: ${location.name}. Now choose a starting point and click "Get Directions".`);
+        }
+
+        // Generate directions between two points
+        function generateDirections(from, to) {
+            if (!from || !to) {
+                showNotification("Please select both starting point and destination.", true);
+                return;
+            }
+            
+            if (from.id === to.id) {
+                showNotification("Starting point and destination are the same.", true);
+                return;
+            }
+            
+            // Calculate distance (simulated)
+            const dx = to.x - from.x;
+            const dy = to.y - from.y;
+            const distance = Math.sqrt(dx * dx + dy * dy) * 2.5; // Scale factor
+            
+            // Estimated walking time (assuming 1.4 m/s walking speed)
+            const walkingTime = Math.round(distance / 1.4);
+            
+            // Generate directions
+            const directions = [
+                { instruction: `Start at ${from.name}`, distance: "0 m" },
+                { instruction: "Head toward the main campus pathway", distance: `${Math.round(distance * 0.2)} m` },
+                { instruction: "Continue straight past the central courtyard", distance: `${Math.round(distance * 0.4)} m` },
+                { instruction: `Turn right toward ${to.name}`, distance: `${Math.round(distance * 0.7)} m` },
+                { instruction: `Arrive at ${to.name}`, distance: `${Math.round(distance)} m` }
+            ];
+            
+            // Display directions
+            displayDirections(directions, distance, walkingTime);
+            
+            // Show notification
+            showNotification(`Directions from ${from.name} to ${to.name}. Estimated walking time: ${walkingTime} seconds.`);
+        }
+
+        // Display directions in the UI
+        function displayDirections(directions, totalDistance, walkingTime) {
+            directionsInstructions.innerHTML = '';
+            
+            // Add header
+            const header = document.createElement('div');
+            header.style.padding = "10px 15px";
+            header.style.backgroundColor = "#e9f2ff";
+            header.style.borderRadius = "8px";
+            header.style.marginBottom = "15px";
+            header.style.display = "flex";
+            header.style.justifyContent = "space-between";
+            header.innerHTML = `
+                <div>
+                    <strong>Total Distance:</strong> ${Math.round(totalDistance)} m
+                </div>
+                <div>
+                    <strong>Walking Time:</strong> ${walkingTime} seconds
+                </div>
+            `;
+            directionsInstructions.appendChild(header);
+            
+            // Add each direction step
+            directions.forEach((step, index) => {
+                const stepElement = document.createElement('div');
+                stepElement.className = 'instruction-step';
+                
+                stepElement.innerHTML = `
+                    <div class="step-number">${index + 1}</div>
+                    <div class="step-text">
+                        <div>${step.instruction}</div>
+                        <div class="step-distance">${step.distance}</div>
+                    </div>
+                `;
+                
+                directionsInstructions.appendChild(stepElement);
+            });
+        }
+
+        // Show notification
+        function showNotification(message, isError = false) {
+            notificationText.textContent = message;
+            notification.style.backgroundColor = isError ? "#ff6b6b" : "#1a6bc4";
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search functionality
+            searchBtn.addEventListener('click', () => {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                
+                if (searchTerm) {
+                    const foundLocations = campusLocations.filter(loc => 
+                        loc.name.toLowerCase().includes(searchTerm) || 
+                        loc.description.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    if (foundLocations.length > 0) {
+                        // Select the first matching location
+                        selectLocation(foundLocations[0].id);
+                        searchInput.value = '';
+                    } else {
+                        showNotification(`No locations found for "${searchTerm}"`, true);
+                    }
+                }
+            });
+            
+            // Category filter buttons
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderLocationList(btn.dataset.category);
+                });
+            });
+            
+            // Get directions button
+            getDirectionsBtn.addEventListener('click', () => {
+                if (!fromLocation && fromInput.value) {
+                    // Try to find location by name
+                    const fromLoc = campusLocations.find(loc => 
+                        loc.name.toLowerCase().includes(fromInput.value.toLowerCase())
+                    );
+                    
+                    if (fromLoc) {
+                        fromLocation = fromLoc;
+                    }
+                }
+                
+                if (!toLocation && toInput.value) {
+                    // Try to find location by name
+                    const toLoc = campusLocations.find(loc => 
+                        loc.name.toLowerCase().includes(toInput.value.toLowerCase())
+                    );
+                    
+                    if (toLoc) {
+                        toLocation = toLoc;
+                    }
+                }
+                
+                generateDirections(fromLocation, toLocation);
+            });
+            
+            // Enter key for search
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+            
+            // Auto-suggest for from input
+            fromInput.addEventListener('input', () => {
+                const input = fromInput.value.toLowerCase();
+                if (input.length >= 2) {
+                    const match = campusLocations.find(loc => 
+                        loc.name.toLowerCase().includes(input)
+                    );
+                    
+                    if (match) {
+                        fromLocation = match;
+                    }
+                }
+            });
+            
+            // Auto-suggest for to input
+            toInput.addEventListener('input', () => {
+                const input = toInput.value.toLowerCase();
+                if (input.length >= 2) {
+                    const match = campusLocations.find(loc => 
+                        loc.name.toLowerCase().includes(input)
+                    );
+                    
+                    if (match) {
+                        toLocation = match;
+                    }
+                }
+            });
+            
+            // Set current location as from
+            document.getElementById('setCurrentLocation').addEventListener('click', () => {
+                fromInput.value = "Your current location";
+                fromLocation = null;
+                showNotification("Current location set. Now select a destination.");
+            });
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

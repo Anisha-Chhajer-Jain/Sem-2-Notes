@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Converter UI</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(135deg, #7b2ff7, #f107a3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.converter {
+  width: 360px;
+  background: #ff0055;
+  padding: 30px;
+  border-radius: 25px;
+  color: white;
+  text-align: center;
+}
+
+.converter h1 {
+  margin-bottom: 8px;
+}
+
+.converter p {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 20px;
+}
+
+.inputs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.inputs input {
+  width: 50%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+button {
+  background: white;
+  color: #7b2ff7;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.results {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.result-box {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.result {
+  width: 33%;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.error {
+  font-size: 13px;
+  color: #ffeaea;
+}
+</style>
+</head>
+
+<body>
+
+<div class="converter">
+  <h1>Converter</h1>
+  <p>Enter a value in km and select a unit</p>
+
+  <div class="inputs">
+    <input type="number" id="km" placeholder="VALUE (KM)">
+    <input type="text" id="unit" placeholder="UNIT">
+  </div>
+
+  <button onclick="convert()">Convert</button>
+
+  <div class="results">
+    <div class="result-box">
+      <div class="result">
+        <strong>CM</strong>
+        <div id="cm">NaN</div>
+      </div>
+      <div class="result">
+        <strong>FEET</strong>
+        <div id="feet">NaN</div>
+      </div>
+      <div class="result">
+        <strong>MILES</strong>
+        <div id="miles">NaN</div>
+      </div>
+    </div>
+
+    <div class="error" id="error"></div>
+  </div>
+</div>
+
+<script>
+function convert() {
+  const km = parseFloat(document.getElementById("km").value);
+  const unit = document.getElementById("unit").value.toLowerCase();
+  const error = document.getElementById("error");
+
+  document.getElementById("cm").innerText = "NaN";
+  document.getElementById("feet").innerText = "NaN";
+  document.getElementById("miles").innerText = "NaN";
+  error.innerText = "";
+
+  if (isNaN(km)) {
+    error.innerText = "Please enter a valid number.";
+    return;
+  }
+
+  if (!["cm", "feet", "miles"].includes(unit)) {
+    error.innerText = "Invalid unit '" + unit + "'. Please use 'cm', 'feet', or 'miles'.";
+    return;
+  }
+
+  document.getElementById("cm").innerText = (km * 100000).toFixed(2);
+  document.getElementById("feet").innerText = (km * 3280.84).toFixed(2);
+  document.getElementById("miles").innerText = (km * 0.621371).toFixed(2);
+}
+</script>
+
+</body>
+</html>
