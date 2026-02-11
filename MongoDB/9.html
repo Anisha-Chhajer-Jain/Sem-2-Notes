@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>MongoDB Advanced & Real-World Queries</title>
@@ -56,11 +57,14 @@
       background: white;
     }
 
-    table, th, td {
+    table,
+    th,
+    td {
       border: 1px solid #cbd5e1;
     }
 
-    th, td {
+    th,
+    td {
       padding: 12px;
       text-align: left;
     }
@@ -130,22 +134,22 @@
 
 <body>
 
-<header>
-  <h1>MongoDB Advanced & Real-World Queries</h1>
-  <p>Negation, Regex, Expressions & Performance Awareness</p>
-</header>
+  <header>
+    <h1>MongoDB Advanced & Real-World Queries</h1>
+    <p>Negation, Regex, Expressions & Performance Awareness</p>
+  </header>
 
-<div class="container">
+  <div class="container">
 
-  <p>
-    Real backend systems rely on advanced query logic.
-    MongoDB provides powerful operators for negation, pattern matching,
-    field-to-field comparison, and complex filtering.
-  </p>
+    <p>
+      Real backend systems rely on advanced query logic.
+      MongoDB provides powerful operators for negation, pattern matching,
+      field-to-field comparison, and complex filtering.
+    </p>
 
-  <h2>Prerequisite: Insert Practice Data</h2>
+    <h2>Prerequisite: Insert Practice Data</h2>
 
-  <pre>
+    <pre>
 use codinggita
 
 db.jobs.insertMany([
@@ -180,41 +184,41 @@ db.jobs.insertMany([
 ]);
   </pre>
 
-  <h2>1. Negation Operators</h2>
+    <h2>1. Negation Operators</h2>
 
-  <table>
-    <tr>
-      <th>Operator</th>
-      <th>Meaning</th>
-      <th>Logic</th>
-    </tr>
-    <tr>
-      <td>$not</td>
-      <td>Negates a condition</td>
-      <td>NOT</td>
-    </tr>
-    <tr>
-      <td>$nor</td>
-      <td>No condition matches</td>
-      <td>NOT (A OR B)</td>
-    </tr>
-  </table>
+    <table>
+      <tr>
+        <th>Operator</th>
+        <th>Meaning</th>
+        <th>Logic</th>
+      </tr>
+      <tr>
+        <td>$not</td>
+        <td>Negates a condition</td>
+        <td>NOT</td>
+      </tr>
+      <tr>
+        <td>$nor</td>
+        <td>No condition matches</td>
+        <td>NOT (A OR B)</td>
+      </tr>
+    </table>
 
-  <h3>$not Example</h3>
+    <h3>$not Example</h3>
 
-  <pre>
+    <pre>
 db.jobs.find({
   experience: { $not: { $gt: 2 } }
 })
   </pre>
 
-  <div class="warning">
-    $not must be applied at the field level, not at the query root.
-  </div>
+    <div class="warning">
+      $not must be applied at the field level, not at the query root.
+    </div>
 
-  <h2>2. $nor – Multiple Condition Negation</h2>
+    <h2>2. $nor – Multiple Condition Negation</h2>
 
-  <pre>
+    <pre>
 db.jobs.find({
   $nor: [
     { company: "Amazon" },
@@ -223,56 +227,65 @@ db.jobs.find({
 })
   </pre>
 
-  <div class="note">
-    This means: NOT (company = Amazon OR location = Bangalore)
-  </div>
+    <div class="note">
+      This means: NOT (company = Amazon OR location = Bangalore)
+    </div>
 
-  <h2>3. $regex – Pattern Matching</h2>
+    <h2>3. $regex – Pattern Matching</h2>
 
-  <table>
-    <tr>
-      <th>Pattern</th>
-      <th>Meaning</th>
-    </tr>
-    <tr><td>^</td><td>Starts with</td></tr>
-    <tr><td>$</td><td>Ends with</td></tr>
-    <tr><td>.*</td><td>Any characters</td></tr>
-  </table>
+    <table>
+      <tr>
+        <th>Pattern</th>
+        <th>Meaning</th>
+      </tr>
+      <tr>
+        <td>^</td>
+        <td>Starts with</td>
+      </tr>
+      <tr>
+        <td>$</td>
+        <td>Ends with</td>
+      </tr>
+      <tr>
+        <td>.*</td>
+        <td>Any characters</td>
+      </tr>
+    </table>
 
-  <h3>Starts With “Senior”</h3>
-  <pre>
+    <h3>Starts With “Senior”</h3>
+    <pre>
 db.jobs.find({
   role: { $regex: "^Senior" }
 })
   </pre>
 
-  <h3>Ends With “Developer”</h3>
-  <pre>
+    <h3>Ends With “Developer”</h3>
+    <pre>
 db.jobs.find({
   role: { $regex: "Developer$" }
 })
   </pre>
 
-  <h3>Case-Insensitive Match</h3>
-  <pre>
+    <h3>Case-Insensitive Match</h3>
+    <pre>
 db.jobs.find({
   role: { $regex: "backend", $options: "i" }
 })
   </pre>
 
-  <div class="warning">
-    Regex can cause full collection scans. Avoid it in high-traffic APIs.
-  </div>
+    <div class="warning">
+      Regex can cause full collection scans. Avoid it in high-traffic APIs.
+    </div>
 
-  <h2>4. $expr – Field-to-Field Comparison</h2>
+    <h2>4. $expr – Field-to-Field Comparison</h2>
 
-  <div class="rule">
-    Use $expr when comparing one field with another field or expression.
-  </div>
+    <div class="rule">
+      Use $expr when comparing one field with another field or expression.
+    </div>
 
-  <h3>Salary &gt; Experience × 5 Lakh</h3>
+    <h3>Salary &gt; Experience × 5 Lakh</h3>
 
-  <pre>
+    <pre>
 db.jobs.find({
   $expr: {
     $gt: ["$salary", { $multiply: ["$experience", 500000] }]
@@ -280,9 +293,9 @@ db.jobs.find({
 })
   </pre>
 
-  <h3>Experience &lt; Salary / 10 Lakh</h3>
+    <h3>Experience &lt; Salary / 10 Lakh</h3>
 
-  <pre>
+    <pre>
 db.jobs.find({
   $expr: {
     $lt: ["$experience", { $divide: ["$salary", 1000000] }]
@@ -290,21 +303,36 @@ db.jobs.find({
 })
   </pre>
 
-  <table>
-    <tr>
-      <th>Operator</th>
-      <th>Purpose</th>
-    </tr>
-    <tr><td>$gt</td><td>Greater than</td></tr>
-    <tr><td>$lt</td><td>Less than</td></tr>
-    <tr><td>$add</td><td>Addition</td></tr>
-    <tr><td>$multiply</td><td>Multiplication</td></tr>
-    <tr><td>$divide</td><td>Division</td></tr>
-  </table>
+    <table>
+      <tr>
+        <th>Operator</th>
+        <th>Purpose</th>
+      </tr>
+      <tr>
+        <td>$gt</td>
+        <td>Greater than</td>
+      </tr>
+      <tr>
+        <td>$lt</td>
+        <td>Less than</td>
+      </tr>
+      <tr>
+        <td>$add</td>
+        <td>Addition</td>
+      </tr>
+      <tr>
+        <td>$multiply</td>
+        <td>Multiplication</td>
+      </tr>
+      <tr>
+        <td>$divide</td>
+        <td>Division</td>
+      </tr>
+    </table>
 
-  <h2>5. Operator Composition</h2>
+    <h2>5. Operator Composition</h2>
 
-  <pre>
+    <pre>
 db.jobs.find({
   role: { $regex: "Backend", $options: "i" },
   experience: { $gte: 3, $lte: 5 },
@@ -313,50 +341,63 @@ db.jobs.find({
 })
   </pre>
 
-  <div class="note">
-    This is how real backend filtering looks in production systems.
+    <div class="note">
+      This is how real backend filtering looks in production systems.
+    </div>
+
+    <h2>6. Performance Awareness</h2>
+
+    <table>
+      <tr>
+        <th>Mistake</th>
+        <th>Impact</th>
+      </tr>
+      <tr>
+        <td>Regex without ^</td>
+        <td>Full collection scan</td>
+      </tr>
+      <tr>
+        <td>Overusing $expr</td>
+        <td>Slower queries</td>
+      </tr>
+      <tr>
+        <td>Inconsistent schema</td>
+        <td>Wrong results</td>
+      </tr>
+      <tr>
+        <td>Too many conditions</td>
+        <td>Index misuse</td>
+      </tr>
+    </table>
+
+    <div class="rule">
+      Design schema for queries — not queries for schema.
+    </div>
+
+    <h2>Key Takeaways</h2>
+
+    <ul>
+      <li>Use $not and $nor for exclusion logic</li>
+      <li>Apply regex carefully and sparingly</li>
+      <li>Use $expr only when fixed values are insufficient</li>
+      <li>Compose multiple operators for real queries</li>
+      <li>Always think about performance</li>
+    </ul>
+
+    <button onclick="showAdvancedTip()">Advanced Query Tip</button>
+
   </div>
 
-  <h2>6. Performance Awareness</h2>
+  <footer>
+    <p>© 2026 MongoDB Advanced Queries | Production-Ready Concepts</p>
+  </footer>
 
-  <table>
-    <tr>
-      <th>Mistake</th>
-      <th>Impact</th>
-    </tr>
-    <tr><td>Regex without ^</td><td>Full collection scan</td></tr>
-    <tr><td>Overusing $expr</td><td>Slower queries</td></tr>
-    <tr><td>Inconsistent schema</td><td>Wrong results</td></tr>
-    <tr><td>Too many conditions</td><td>Index misuse</td></tr>
-  </table>
-
-  <div class="rule">
-    Design schema for queries — not queries for schema.
-  </div>
-
-  <h2>Key Takeaways</h2>
-
-  <ul>
-    <li>Use $not and $nor for exclusion logic</li>
-    <li>Apply regex carefully and sparingly</li>
-    <li>Use $expr only when fixed values are insufficient</li>
-    <li>Compose multiple operators for real queries</li>
-    <li>Always think about performance</li>
-  </ul>
-
-  <button onclick="showAdvancedTip()">Advanced Query Tip</button>
-
-</div>
-
-<footer>
-  <p>© 2026 MongoDB Advanced Queries | Production-Ready Concepts</p>
-</footer>
-
-<script>
-  function showAdvancedTip() {
-    alert("If a query feels complex, test it with find() before using it in update or delete operations.");
-  }
-</script>
+  <script>
+    function showAdvancedTip() {
+      alert("If a query feels complex, test it with find() before using it in update or delete operations.");
+    }
+  </script>
 
 </body>
+
 </html>
