@@ -1,0 +1,64 @@
+import { combineSlices } from '@reduxjs/toolkit';
+import React, {useState, useRef} from 'react';
+// import CompA from './components/CompA.jsx';
+// import CompB from './components/CompB.jsx';
+// import PhotoData from './components/PhotoData.jsx';
+
+function App() {
+  // const[formData, setForm] = useState({
+  //   name1: '',
+  //   email: '',
+  //   phone: '',
+  // });
+
+  const name1Ref = useRef();
+  const emailRef = useRef();
+  const phoneRef = useRef();
+
+
+  // function handleFormData(event){
+  //   event.preventDefault();
+
+  //   console.log(`Function got called because of particular event...`)
+  //   console.log(event.target.name);
+  //   setForm({...formData, [event.target.name] : event.target.value});
+  //   console.log("Data stored...");
+  //   console.log(formData);    
+  // }
+
+  function handleSumbit(event){
+    event.preventDefault();
+
+    console.log("Local Storage function is now getting execute");
+    console.log(name1Ref.current.value);
+
+    const currentData = {
+      name1: name1Ref.current.value,
+      email: emailRef.current.value,
+      phone: phoneRef.current.value,
+    };
+
+    console.log(currentData);
+
+    localStorage.setItem("1", JSON.stringify(currentData));
+
+    // name1Ref.current.value = '';
+    // emailRef.current.value = '';
+    // phoneRef.current.value = '';
+
+    console.log(event);
+    event.target.reset;
+  }
+
+  return (
+    <>
+      <form>
+        <input type="text" ref = {name1Ref} name="name1"  placeholder='Enter your name' required />
+        <input type="email" ref={emailRef} name="email"  placeholder='Enter your valid email'required />
+        <input type="number" ref={phoneRef}  name="phone"  placeholder='Enter your valid mobile number'required />
+        <button type="button" onClick={handleSumbit}>Sumbit</button>
+      </form>
+    </>);
+}
+
+export default App;
