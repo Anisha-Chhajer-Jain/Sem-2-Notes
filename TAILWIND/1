@@ -1,0 +1,26 @@
+<div class="font-bold text-6xl text-green-600 text-center border-2 border-red-700 rounded-2xl mx-2.5 my-3">Hello</div>
+
+<div class="font-bold text-6xl text-green-600 text-center border-2 border-gray-900 rounded-t-full w-78 h-80 mb-15">Hello</div>
+
+<div class="font-bold text-6xl text-orange-700 text-center border-2 border-gray-900 rounded-ss-2xl rounded-ee-2xl w-78 h-80 mb-15 mx-auto bg-purple-600 ">Hello</div>
+
+
+
+<div class="border-2 h-45 flex items-center mb-14">
+   <p class="border-2 border-amber-400 w-full text-center hover:rotate-12 transition-all duration-200">Rotate property</p>
+</div>
+
+<div class="border-2 h-45 flex items-center mb-15">
+   <p class="border-2 border-amber-400 w-full text-center hover:scale-168 transition-all duration-200">Scale Property</p>
+</div>
+
+<div class="border-2 h-45 flex items-center mb-15">
+   <p class="border-2 border-amber-400 w-full text-center hover:skew-y-12 transition-all duration-200">Skew Property</p>
+</div>
+
+<div class="border-2 h-45 flex items-center mb-15">
+   <p class="border-2 border-amber-400  w-full text-center hover:animate-bounce transition-all duration-200 ">animation Property</p>
+</div>
+
+<div class="border-2 h-45  mb-15">
+  

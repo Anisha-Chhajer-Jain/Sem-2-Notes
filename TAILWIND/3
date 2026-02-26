@@ -1,0 +1,8 @@
+Position Property
+</div>
+
+<!-- media queries -> sm, md, lg  -->
+
+<!-- sm:   640px to 767px  md:  768px to 1023px  lg:  1024px to 1279px -->
+
+<div class="border-2 border-red-700 mb-14 h-78  sm:text-orange-500  md:text-6xl">Hello</div>
