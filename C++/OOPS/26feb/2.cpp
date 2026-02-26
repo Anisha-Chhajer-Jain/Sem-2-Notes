@@ -1,87 +1,52 @@
-#include<iostream>
-#include<string>
+// #include <iostream>
+// #include <string>
 
-using namespace std;
+// using namespace std; 
 
-class Laptop{
+// class Laptop{
+//     public:
+//     string Ram = "Ram Available";
+//     string Storage = "Storge Available";
+//     string Mother_Board = "MotherBoard is Available";
+
+// // Common Function members ....
+
+// void display(){
+//    cout << "Parent fucntion got called and the common data members are; " << endl;
+//    cout << "Ram: " << this->Ram << endl;
+//    cout << "Storage " << this->Storage << endl;
+//    cout << "Mother_Board: " << this->Mother_Board << endl;
+//   }
+// };
+
+// class Lenovo : public Laptop{
+//     //distinct data members
     
-    // Common Data members.....
+//     public:
     
-    public:
-       
-        string Ram = "Ram Available";
-        string Storage = "Storge Available";
-        string Mother_Board = "MotherBoard is Available";
-        
-    // Common Function members....
-      
-       
-       void display(){
-           cout << "Parent fucntion got called and the common data members are;  " << endl;
-           cout << "Ram:  " << this->Ram<<endl;
-           cout << "Storage " << this->Storage << endl;
-           cout << "Mother_Board: " << this->Mother_Board << endl;
-       }
-       
-       
-};
-
-
-class Lenovo : public Laptop{
+//     string Storage_Type;
+//     string Ram_version;
     
-    // Distinct Data members...
-     
-     public:
-        
-        string Storage_Type;
-        string Ram_version;
-        
-        Lenovo(string Storage_Type, string Ram_version){
-            this->Storage_Type = Storage_Type;
-            this->Ram_version = Ram_version;
-        }
-        
-        void display1(){
-            cout << "Children fucntion is getting called:" << endl;
-            
-            cout << "Storage_Type: " << this->Storage_Type<<endl;
-            cout << "Ram_version: " << this->Ram_version << endl;
-        }
-        
-        void accessParentVaraible(){
-           cout << "The Storage value is" << Storage << endl;
-       }
-};
+//     Lenovo(string Storage_Type,string Ram_version){
+//        this->Storage_Type = Storage_Type;
+//        this->Ram_version = Ram_version;
+//     }
+// }
 
-class LenovoSubBrand : public Lenovo{
-    
-    public:
+// void display1(){
+// cout << "Children fucntion is getting called:" << endl;
 
-        LenovoSubBrand(string Storage_Type, string Ram_version):Lenovo(Storage_Type, Ram_version){};
-        
-        void display2(){
-            cout << "This fucntion is declared inisde LenovoSubBrand who is a children class of its Lenovo parent only" << endl;
-        }
-        
-};
+// cout << "Storage_Type: " << this->Storage_Type << endl;
+// cout << "Ram_version: " << this->Ram_version << endl;
 
 
-int main(){
-    
-    // Lenovo l1("SSD", "16GB");
-    
-    // l1.display();
-    
-    // l1.display1();
-    
-    // l1.accessParentVaraible();
-    
-    LenovoSubBrand l2("SSD", "16gb");
-    
-    l2.display2();
-    
-    l2.display1();
-    
-    l2.display();
-    return 0;
-}
+
+
+
+
+// int main()
+// {
+//     std::cout<<"Hello World";
+
+//     return 0;
+// }
