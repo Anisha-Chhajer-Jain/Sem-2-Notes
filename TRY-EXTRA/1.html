@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anisha Chhajer - Resume</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Main resume card */
+        .resume {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .resume:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Header section with gradient */
+        .header {
+            background: linear-gradient(120deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 250px;
+            height: 250px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .name {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 25px;
+            font-weight: 400;
+            border-left: 4px solid #ffd700;
+            padding-left: 20px;
+        }
+
+        .contact-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-item span {
+            background: rgba(255,255,255,0.15);
+            padding: 5px 12px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Main two-column layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 0;
+            background: #f8fafd;
+        }
+
+        /* Left column - darker background */
+        .left-column {
+            background: #f0f4fa;
+            padding: 40px 30px;
+            border-right: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .right-column {
+            padding: 40px 30px;
+            background: white;
+        }
+
+        /* Section styles */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e3c72;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 3px solid #2a5298;
+            padding-bottom: 8px;
+        }
+
+        .section-title i {
+            font-style: normal;
+            font-size: 1.5rem;
+        }
+
+        /* Skills styling */
+        .skills-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .skill-category {
+            background: white;
+            border-radius: 15px;
+            padding: 18px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .skill-category h4 {
+            color: #2a5298;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.05);
+        }
+
+        /* Education items */
+        .edu-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border-left: 4px solid #2a5298;
+        }
+
+        .edu-item h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+
+        .edu-item .meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .edu-item p {
+            color: #444;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Certificate grid */
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .cert-item {
+            background: #f8fafd;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid #eef2f6;
+            transition: all 0.3s;
+        }
+
+        .cert-item:hover {
+            border-color: #2a5298;
+            transform: translateY(-2px);
+        }
+
+        .cert-item h5 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+
+        .cert-item .issuer {
+            color: #666;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cert-badge {
+            background: #ffd700;
+            color: #1e3c72;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Project cards */
+        .project-item {
+            background: #f8fafd;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid #eef2f6;
+            transition: all 0.3s;
+        }
+
+        .project-item:hover {
+            border-color: #2a5298;
+            box-shadow: 0 8px 15px rgba(42, 82, 152, 0.1);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .project-header h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .project-tag {
+            background: #e6eefc;
+            color: #2a5298;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .project-item p {
+            color: #444;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 10px 0 0 0;
+        }
+
+        /* Summary in right column */
+        .summary {
+            background: #f8fafd;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid #eef2f6;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 750px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .left-column {
+                border-right: none;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+            
+            .name {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Print styles for PDF */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .resume {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .header {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .skill-tag {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .cert-badge {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* Decorative elements */
+        .availability-box {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .availability-box h4 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .availability-list {
+            list-style: none;
+        }
+
+        .availability-list li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .availability-list li::before {
+            content: "•";
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="resume">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1 class="name">Anisha Chhajer</h1>
+                <div class="tagline">Crafting elegant, responsive web experiences with precision and care</div>
+                <div class="contact-bar">
+                    <div class="contact-item"><span>📧 anishachhajer16@email.com</span></div>
+                    <div class="contact-item"><span>📱 +91 9474719009</span></div>
+                    <div class="contact-item"><span>📍 Ahmedabad, India</span></div>
+                    <div class="contact-item"><span>🔗 https://github.com/Anisha-Chhajer-Jain</span></div>
+                    <div class="contact-item"><span>💼 https://www.linkedin.com/in/anisha-chhajer-844114367/</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Skills -->
+                <div class="section-title">
+                    <i>⚡</i> Core Skills
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Frontend Development</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">HTML5</span>
+                            <span class="skill-tag">CSS3</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Tailwind</span>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Backend & Languages</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">C++</span>
+                            <span class="skill-tag">Java</span>
+                            <span class="skill-tag">MongoDB</span>
+                            <span class="skill-tag">Postman</span>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Tools & Design</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Git</span>
+                            <span class="skill-tag">GitHub</span>
+                            <span class="skill-tag">Figma</span>
+                            <span class="skill-tag">Canva</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="section-title" style="margin-top: 30px;">
+                    <i>📚</i> Education
+                </div>
+                
+                <div class="edu-item">
+                    <h4>BTech in Computer Science</h4>
+                    <div class="meta">CodingGita X Swaminarayan University | 2025-2029</div>
+                    <p>Full-stack development, UI/UX design, MongoDB, problem solving, and database management.</p>
+                </div>
+                
+                <div class="edu-item">
+                    <h4>School Education (Science with Math)</h4>
+                    <div class="meta">St. James School | 2012-2025</div>
+                    <p>12th grade graduate with focus on Java, object-oriented programming, and logical thinking.</p>
+                </div>
+
+                <!-- Availability -->
+                <div class="availability-box">
+                    <h4>✨ Available for</h4>
+                    <ul class="availability-list">
+                        <li>Full-stack web development</li>
+                        <li>React & Node.js projects</li>
+                        <li>UI/UX design consultation</li>
+                        <li>Code reviews & mentoring</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Summary -->
+                <div class="section-title">
+                    <i>👋</i> About Me
+                </div>
+                <div class="summary">
+                    I'm a developer skilled in building experiences that feel intuitive and polished. I focus on responsive interfaces that adapt seamlessly across devices, with careful attention to layout, interaction, and performance. I care deeply about clean code, clarity, and structure — turning ideas into fast, meaningful digital experiences where thoughtful engineering meets simple, elegant design.
+                </div>
+
+                <!-- Projects -->
+                <div class="section-title">
+                    <i>🚀</i> Featured Projects
+                </div>
+
+                <div class="project-item">
+                    <div class="project-header">
+                        <h4>Flipkart Clone</h4>
+                        <div class="project-tags">
+                            <span class="project-tag">HTML</span>
+                            <span class="project-tag">CSS</span>
+                            <span class="project-tag">JS</span>
+                            <span class="project-tag">Responsive</span>
+                        </div>
+                    </div>
+                    <p>A fully responsive Flipkart-inspired e-commerce UI clone with product listings, cart functionality, and modern design.</p>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-header">
+                        <h4>Rare Planet</h4>
+                        <div class="project-tags">
+                            <span class="project-tag">HTML</span>
+                            <span class="project-tag">CSS</span>
+                            <span class="project-tag">JS</span>
+                            <span class="project-tag">Animations</span>
+                        </div>
+                    </div>
+                    <p>A Rare Planet–inspired website UI clone with smooth animations, modern layout, and interactive elements.</p>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-header">
+                        <h4>Shure Music</h4>
+                        <div class="project-tags">
+                            <span class="project-tag">HTML</span>
+                            <span class="project-tag">CSS</span>
+                            <span class="project-tag">JS</span>
+                            <span class="project-tag">Audio</span>
+                        </div>
+                    </div>
+                    <p>A Shure-inspired responsive website UI clone for audio products with sleek design and smooth transitions.</p>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-header">
+                        <h4>MX Player Clone</h4>
+                        <div class="project-tags">
+                            <span class="project-tag">HTML</span>
+                            <span class="project-tag">CSS</span>
+                            <span class="project-tag">JS</span>
+                            <span class="project-tag">Video</span>
+                        </div>
+                    </div>
+                    <p>A responsive MX Player clone offering a smooth video streaming experience with user-friendly interface.</p>
+                </div>
+
+                <!-- Certifications -->
+                <div class="section-title" style="margin-top: 20px;">
+                    <i>🏆</i> Certifications
+                </div>
+                
+                <div class="certs-grid">
+                    <div class="cert-item">
+                        <h5>JavaScript Certification</h5>
+                        <div class="issuer">SoloLearn <span class="cert-badge">2025</span></div>
+                    </div>
+                    <div class="cert-item">
+                        <h5>Front-End Development</h5>
+                        <div class="issuer">SimpliLearn <span class="cert-badge">2025</span></div>
+                    </div>
+                    <div class="cert-item">
+                        <h5>React (Basic) Certificate</h5>
+                        <div class="issuer">HackerRank <span class="cert-badge">2026</span></div>
+                    </div>
+                    <div class="cert-item">
+                        <h5>Full Stack Development</h5>
+                        <div class="issuer">Unstop <span class="cert-badge">2026</span></div>
+                    </div>
+                    <div class="cert-item">
+                        <h5>Generative AI Studio</h5>
+                        <div class="issuer">SimpliLearn <span class="cert-badge">2025</span></div>
+                    </div>
+                    <div class="cert-item">
+                        <h5>AI Video Generation</h5>
+                        <div class="issuer">SimpliLearn <span class="cert-badge">2025</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Small script to update the year automatically if needed
+        document.querySelectorAll('.cert-badge').forEach(badge => {
+            // Keeps the year as is from the HTML
+        });
+    </script>
+</body>
+</html>
