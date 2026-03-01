@@ -93,7 +93,7 @@ int main() {
 
     file.close();   // Close file
 
-    cout << "\nResults saved in result.txt file ✅" << endl;
+    cout << "\nResults saved in result.txt file" << endl;
 
     return 0;
 }
