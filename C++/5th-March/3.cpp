@@ -34,7 +34,7 @@ class CreateObj{
     
       static void display1(){
           cout <<"The display1 fucntion is a static fucntion belongs to a class not to an object" << endl;
-          display();
+        //   display();
       }
       
     // Destrucotr to trace those objects which are going to destroy....
